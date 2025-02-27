@@ -44,9 +44,7 @@ class PokemonDetailViewModel @Inject constructor(
     private val _isFavorite = MutableStateFlow(false)
     val isFavorite: StateFlow<Boolean> = _isFavorite
 
-    init {
-        // Se inicializa cuando se obtiene el detalle del Pokémon
-    }
+
 
     fun getPokemonDetail(pokemonId: String) {
         viewModelScope.launch {
@@ -87,7 +85,7 @@ class PokemonDetailViewModel @Inject constructor(
             if (_isFavorite.value) {
                 pokemonfavRepository.removeFromFavorites(pokemon.pokemonId)
             } else {
-                pokemonfavRepository.addToFavorites(PokemonFavEntity(id = pokemon.pokemonId))
+                pokemonfavRepository.addToFavorites(PokemonFavEntity(pokemonId = pokemon.pokemonId, name = pokemon.name))
             }
             _isFavorite.value = !_isFavorite.value
         }

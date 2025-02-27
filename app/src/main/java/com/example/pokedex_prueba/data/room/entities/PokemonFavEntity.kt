@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "pokemon_favs")
 data class PokemonFavEntity(
-    @PrimaryKey val id: String = "",
+    @PrimaryKey val pokemonId: String = "",
     val name: String = "",
     val spriteUrl: String = ""
 )

@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.pokedex_prueba.ui.navigation.NavManager
 import com.example.pokedex_prueba.ui.theme.Pokedex_PruebaTheme
+import com.example.pokedex_prueba.ui.viewmodels.FavoritePokemonViewModel
 import com.example.pokedex_prueba.ui.viewmodels.PokemonDetailViewModel
 import com.example.pokedex_prueba.ui.viewmodels.PokemonListViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,12 +29,13 @@ class MainActivity : ComponentActivity() {
 
         val pokemonListViewModel: PokemonListViewModel by viewModels()
         val pokemonDetailModel: PokemonDetailViewModel by viewModels()
+        val favoritePokemonViewModel: FavoritePokemonViewModel by viewModels()
         enableEdgeToEdge()
         setContent {
             Pokedex_PruebaTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
                     val navController = rememberNavController()
-                    NavManager(navController = navController,pokemonListViewModel,pokemonDetailModel)
+                    NavManager(navController = navController,pokemonListViewModel,pokemonDetailModel,favoritePokemonViewModel)
 
                 }
             }
