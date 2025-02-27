@@ -1,11 +1,16 @@
 package com.example.pokedex_prueba.di
 
 import android.content.Context
+import androidx.room.Room
+import androidx.room.Room.databaseBuilder
 import com.example.pokedex_prueba.Constants.BASE_URL
 import com.example.pokedex_prueba.data.ApiService
+import com.example.pokedex_prueba.data.room.PokemonDatabase
+import com.example.pokedex_prueba.data.room.dao.PokemonRoomDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -18,9 +23,20 @@ import javax.inject.Singleton
 object AppModule {
 
 
+    @Provides
+    fun provideResultSetRowDao(db: PokemonDatabase): PokemonRoomDao {
+        return db.pokemonDao()
+    }
 
-
-
+    @Singleton
+    @Provides
+    fun providesFormsDataBase(@ApplicationContext context: Context): PokemonDatabase {
+        return databaseBuilder(
+            context,
+            PokemonDatabase::class.java,
+            "pkmn_db"
+        ).fallbackToDestructiveMigration().build()
+    }
 
 
     @Singleton

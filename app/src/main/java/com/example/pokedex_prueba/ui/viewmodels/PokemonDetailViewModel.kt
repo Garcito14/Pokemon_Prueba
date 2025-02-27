@@ -6,7 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.pokedex_prueba.data.models.PokemonDetailModel
 import com.example.pokedex_prueba.data.models.PokemonResults
 import com.example.pokedex_prueba.data.repository.PokemonDetailRepository
+import com.example.pokedex_prueba.data.repository.PokemonFavRespository
 import com.example.pokedex_prueba.data.repository.PokemonListRepository
+import com.example.pokedex_prueba.data.room.entities.PokemonFavEntity
 import com.example.pokedex_prueba.data.state.PokemonDetailState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
@@ -20,7 +22,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PokemonDetailViewModel @Inject constructor(
-    private val repository: PokemonDetailRepository
+    private val repository: PokemonDetailRepository,
+    private val pokemonfavRepository: PokemonFavRespository
 ) : ViewModel() {
 
     private val _pokemonDetail = MutableStateFlow<PokemonDetailModel?>(null)
@@ -34,6 +37,9 @@ class PokemonDetailViewModel @Inject constructor(
 
     private val _pokemonState = MutableStateFlow(PokemonDetailState())
     val pokemonState: StateFlow<PokemonDetailState> = _pokemonState
+
+    private val _isFavorite = MutableStateFlow(false)
+    val isFavorite: StateFlow<Boolean> = _isFavorite
 
     fun getPokemonDetail(pokemonId: String) {
         viewModelScope.launch {
@@ -54,6 +60,24 @@ class PokemonDetailViewModel @Inject constructor(
                     errorMessage = "Error al cargar detalles"
                 )
             }
+        }
+    }
+    fun toggleFavorite(pokemon: PokemonFavEntity) {
+        viewModelScope.launch {
+            val isFav = pokemonfavRepository.isPokemonFavorite(pokemon.id)
+            if (isFav) {
+                pokemonfavRepository.removeFromFavorites(pokemon)
+                _isFavorite.value = false
+            } else {
+                pokemonfavRepository.addToFavorites(pokemon)
+                _isFavorite.value = true
+            }
+        }
+    }
+
+    fun isFav(id: String) {
+        viewModelScope.launch {
+            _isFavorite.value = pokemonfavRepository.isPokemonFavorite(id)
         }
     }
 }
