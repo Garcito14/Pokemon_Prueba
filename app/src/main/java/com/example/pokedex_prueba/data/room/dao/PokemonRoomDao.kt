@@ -10,15 +10,16 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PokemonRoomDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addPokemonFav(pokemon: PokemonFavEntity)
 
-    @Delete
-    suspend fun removePokemonFav(pokemon: PokemonFavEntity)
-
-    @Query("SELECT EXISTS(SELECT 1 FROM favorites WHERE id = :id)")
-    suspend fun isPokemonFav(id: String): Boolean
-
-    @Query("SELECT * FROM favorites")
+    @Query("SELECT * FROM pokemon_favs")
     fun getAllPokemonFav(): Flow<List<PokemonFavEntity>>
+
+    @Query("SELECT EXISTS(SELECT 1 FROM pokemon_favs WHERE id = :pokemonId)")
+    fun isFavorite(pokemonId: String): Flow<Boolean>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addFav(pokemon: PokemonFavEntity)
+
+    @Query("DELETE FROM pokemon_favs WHERE id = :pokemonId")
+    suspend fun removeFav(pokemonId: String)
 }

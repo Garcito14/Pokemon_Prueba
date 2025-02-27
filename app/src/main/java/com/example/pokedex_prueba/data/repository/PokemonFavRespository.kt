@@ -5,21 +5,19 @@ import com.example.pokedex_prueba.data.room.entities.PokemonFavEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class PokemonFavRespository @Inject constructor(private val pokemonDao: PokemonRoomDao) {
+class PokemonFavRepository @Inject constructor(private val pokemonFavDao: PokemonRoomDao) {
 
-    fun getAllFavorites(): Flow<List<PokemonFavEntity>> {
-        return pokemonDao.getAllPokemonFav()
-    }
+    fun isPokemonFavorite(pokemonId: String): Flow<Boolean> =
+        pokemonFavDao.isFavorite(pokemonId)
+
+    fun getAllFavorites(): Flow<List<PokemonFavEntity>> =
+        pokemonFavDao.getAllPokemonFav()
 
     suspend fun addToFavorites(pokemon: PokemonFavEntity) {
-        pokemonDao.addPokemonFav(pokemon)
+        pokemonFavDao.addFav(pokemon)
     }
 
-    suspend fun removeFromFavorites(pokemon: PokemonFavEntity) {
-        pokemonDao.removePokemonFav(pokemon)
-    }
-
-    suspend fun isPokemonFavorite(id: String): Boolean {
-        return pokemonDao.isPokemonFav(id)
+    suspend fun removeFromFavorites(pokemonId: String) {
+        pokemonFavDao.removeFav(pokemonId)
     }
 }
