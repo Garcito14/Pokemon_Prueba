@@ -106,7 +106,7 @@ fun PokemonItem(pokemon: PokemonResults,navController: NavController) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
-            .clickable {},
+            .clickable {     navController.navigate("pokemon_detail/$pokemonId")},
 
     ) {
         Column(
@@ -114,6 +114,7 @@ fun PokemonItem(pokemon: PokemonResults,navController: NavController) {
 
                     horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(16.dp)
+
         ) {
 
             Image(
@@ -122,9 +123,7 @@ fun PokemonItem(pokemon: PokemonResults,navController: NavController) {
                 modifier = Modifier
                     .padding(4.dp)
                     .size(100.dp)
-                    .clickable{
-                        navController.navigate("pokemon_detail")
-                    }
+
             )
         Text(pokemon.name.capitalize())
 

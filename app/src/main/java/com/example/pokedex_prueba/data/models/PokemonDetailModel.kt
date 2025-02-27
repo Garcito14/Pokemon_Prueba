@@ -2,8 +2,10 @@ package com.example.pokedex_prueba.data.models
 
 data class PokemonDetailModel(
     val name: String,
-    val sprites: Sprites
+    val sprites: Sprites,
+    val pokemonSpeciesModel: PokemonSpeciesModel? = null
 )
+
 
 data class Sprites(
     val front_default: String?,

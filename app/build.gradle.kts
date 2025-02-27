@@ -61,7 +61,7 @@ dependencies {
 
     // Dagger Hilt
     implementation("com.google.dagger:hilt-android:2.48.1")
-
+    implementation ("com.google.accompanist:accompanist-pager:0.30.1")
 
     kapt ("com.google.dagger:hilt-android-compiler:2.48.1");
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-RC2")
