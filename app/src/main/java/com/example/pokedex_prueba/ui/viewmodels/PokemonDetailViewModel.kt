@@ -29,14 +29,7 @@ class PokemonDetailViewModel @Inject constructor(
     private val pokemonfavRepository: PokemonFavRepository
 ) : ViewModel() {
 
-    private val _pokemonDetail = MutableStateFlow<PokemonDetailModel?>(null)
-    val pokemonDetail: StateFlow<PokemonDetailModel?> = _pokemonDetail
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading
-
-    private val _errorMessage = MutableStateFlow<String?>(null)
-    val errorMessage: StateFlow<String?> = _errorMessage
 
     private val _pokemonState = MutableStateFlow(PokemonDetailState())
     val pokemonState: StateFlow<PokemonDetailState> = _pokemonState
