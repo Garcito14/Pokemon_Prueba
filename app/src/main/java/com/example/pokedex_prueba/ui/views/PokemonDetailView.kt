@@ -113,7 +113,7 @@ fun PokemonDetailView(pokemonDetailViewModel: PokemonDetailViewModel, navControl
                     }
                 }
 
-                // 🛠️ Agregar botones en la esquina superior derecha
+
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -121,7 +121,7 @@ fun PokemonDetailView(pokemonDetailViewModel: PokemonDetailViewModel, navControl
                     contentAlignment = Alignment.TopEnd
                 ) {
                     Row {
-                        // 🔴 Botón de Favoritos
+
                         IconButton(
                             onClick = {
                                 pokemonDetailViewModel.toggleFavorite(PokemonFavoriteState(pokemonId = id))
@@ -135,7 +135,7 @@ fun PokemonDetailView(pokemonDetailViewModel: PokemonDetailViewModel, navControl
                             )
                         }
 
-                        Spacer(modifier = Modifier.width(8.dp)) // Espacio entre botones
+                        Spacer(modifier = Modifier.width(8.dp))
 
 
                         IconButton(
