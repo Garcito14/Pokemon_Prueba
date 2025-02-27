@@ -17,6 +17,7 @@ import com.example.pokedex_prueba.ui.viewmodels.PokemonListViewModel
 import com.example.pokedex_prueba.ui.views.PokemonDetailView
 import com.example.pokedex_prueba.ui.views.PokemonFavoritesScreen
 import com.example.pokedex_prueba.ui.views.PokemonListScreen
+import com.example.pokedex_prueba.ui.views.SavedPokemonView
 
 
 @Composable
@@ -59,6 +60,10 @@ fun NavManager(
 
         composable("pokemon_favorites") {
             PokemonFavoritesScreen(pokemonViewModel,favoritePokemonViewModel, navController)
+        }
+
+        composable("saved_pokemon") {
+            SavedPokemonView(pokemonViewModel,navController)
         }
     }
 }

@@ -66,7 +66,7 @@ fun PokemonDetailView(pokemonDetailViewModel: PokemonDetailViewModel, navControl
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
-            painter = painterResource(id = R.drawable.poke_fondo_2), // Asegúrate de tener la imagen en res/drawable
+            painter = painterResource(id = R.drawable.poke_fondo_2),
             contentDescription = "Fondo de Pokémon",
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()

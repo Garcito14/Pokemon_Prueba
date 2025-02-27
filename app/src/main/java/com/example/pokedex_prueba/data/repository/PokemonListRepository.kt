@@ -2,11 +2,16 @@ package com.example.pokedex_prueba.data.repository
 
 import com.example.pokedex_prueba.data.ApiService
 import com.example.pokedex_prueba.data.models.PokemonModel
+import com.example.pokedex_prueba.data.models.PokemonResults
+import com.example.pokedex_prueba.data.room.dao.SavedPokemonDao
+import com.example.pokedex_prueba.data.room.entities.SavedPokemonEntity
+import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import javax.inject.Inject
 
 class PokemonListRepository @Inject constructor(
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val savedPokemonDao:SavedPokemonDao
 ) {
     suspend fun getPokemonList(limit: Int, offset: Int): Result<PokemonModel> {
         return try {
@@ -21,6 +26,7 @@ class PokemonListRepository @Inject constructor(
             Result.failure(e)
         }
     }
+
     suspend fun searchPokemon(query: String): Result<PokemonModel> {
         return try {
             val response = apiService.getPokemonList(1000, 0)
@@ -38,5 +44,13 @@ class PokemonListRepository @Inject constructor(
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+
+    suspend fun savePokemon(pokemon: PokemonResults) {
+        savedPokemonDao.insertSavedPokemon(SavedPokemonEntity(pokemon.name,pokemon.name))
+    }
+
+    fun getSavedPokemon(): Flow<List<SavedPokemonEntity>> {
+        return savedPokemonDao.getSavedPokemon()
     }
 }

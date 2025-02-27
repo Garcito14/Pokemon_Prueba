@@ -7,6 +7,8 @@ import com.example.pokedex_prueba.Constants.BASE_URL
 import com.example.pokedex_prueba.data.ApiService
 import com.example.pokedex_prueba.data.room.PokemonDatabase
 import com.example.pokedex_prueba.data.room.dao.PokemonRoomDao
+import com.example.pokedex_prueba.data.room.dao.SavedPokemonDao
+
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,8 +26,13 @@ object AppModule {
 
 
     @Provides
-    fun provideResultSetRowDao(db: PokemonDatabase): PokemonRoomDao {
+    fun providesPokemonRowDao(db: PokemonDatabase): PokemonRoomDao {
         return db.pokemonDao()
+    }
+
+    @Provides
+    fun providesSearchQueryDao(db: PokemonDatabase): SavedPokemonDao {
+        return db.savedPokemonDao()
     }
 
     @Singleton

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.pokedex_prueba.data.models.PokemonResults
 
 import com.example.pokedex_prueba.data.repository.PokemonListRepository
+import com.example.pokedex_prueba.data.room.entities.SavedPokemonEntity
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,12 +33,30 @@ class PokemonListViewModel @Inject constructor(
 
     private val _searchResults = MutableStateFlow<List<PokemonResults>?>(null)
     val searchResults: StateFlow<List<PokemonResults>?> = _searchResults
+
+
+    private val _savedPokemon = MutableStateFlow<List<SavedPokemonEntity>>(emptyList())
+    val savedPokemon: StateFlow<List<SavedPokemonEntity>> = _savedPokemon
+
     private var offset = 0
 
     init {
         getPokemonList()
+        getSavedPokemon()
+    }
+    fun savePokemon(pokemon: PokemonResults) {
+        viewModelScope.launch {
+            repository.savePokemon(pokemon)
+        }
     }
 
+     fun getSavedPokemon() {
+        viewModelScope.launch {
+            repository.getSavedPokemon().collect { savedList ->
+                _savedPokemon.value = savedList
+            }
+        }
+    }
     fun getPokemonList() {
         viewModelScope.launch {
             repository.getPokemonList(20, offset).onSuccess {
