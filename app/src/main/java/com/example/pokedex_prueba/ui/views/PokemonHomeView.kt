@@ -1,6 +1,11 @@
 package com.example.pokedex_prueba.ui.views
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.widget.Space
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -47,6 +52,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.capitalize
@@ -61,17 +67,33 @@ import com.example.pokedex_prueba.data.models.PokemonResults
 
 import com.example.pokedex_prueba.ui.viewmodels.PokemonListViewModel
 
-
+fun isNetworkAvailable(context: Context): Boolean {
+    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        val network = connectivityManager.activeNetwork
+        val capabilities = connectivityManager.getNetworkCapabilities(network)
+        return capabilities != null && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    } else {
+        @Suppress("DEPRECATION")
+        return connectivityManager.activeNetworkInfo?.isConnected == true
+    }
+}
 @Composable
 fun PokemonListScreen(pokemonViewModel: PokemonListViewModel, navController: NavController) {
     val pokemonList by pokemonViewModel.pokemonList.collectAsState()
     val searchResults by pokemonViewModel.searchResults.collectAsState()
     val nextPage by pokemonViewModel.nextPage.collectAsState()
     val previousPage by pokemonViewModel.previousPage.collectAsState()
-
+    val context = LocalContext.current
     var searchQuery by remember { mutableStateOf("") }
     var isSearchVisible by remember { mutableStateOf(false) }
 
+    LaunchedEffect(true) {
+        if (!isNetworkAvailable(context)) {
+            Toast.makeText(context, "No hay conexión a Internet", Toast.LENGTH_SHORT).show()
+        }
+        pokemonViewModel.getPokemonList()
+    }
     Box(modifier = Modifier.fillMaxSize()) {
 
         Image(
